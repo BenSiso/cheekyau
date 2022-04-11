@@ -1,0 +1,52 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main, ci ]
+  pull_request:
+    branches: [ main, ci ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: Install dependencies
+        run: yarn
+      - name: Test
+        run: yarn test
+
+      - name: Deploy with Vercel
+        id: deploy
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-args: ${{ (github.ref == 'refs/heads/main' && '--prod') || '' }}
+
+      - name: Notify via Chat
+        env:
+          CHAT_WEBHOOK_GITHUB_ACTION: ${{ secrets.CHAT_WEBHOOK_GITHUB_ACTION }}
+        if: ${{ !!env.CHAT_WEBHOOK_GITHUB_ACTION }}
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: ${{ env.CHAT_WEBHOOK_GITHUB_ACTION }}
+          method: 'POST'
+          data: '{"text":"Event: *${{ github.event_name }}* on *${{ github.ref }}* by *${{ github.actor }}*\n\nDeployment name: ${{ steps.deploy.outputs.preview-name }}\nURL: ${{ steps.deploy.outputs.preview-url }}"}'
+
+      - name: Notify via Slack Notification
+        uses: archive/github-actions-slack@v2.0.0
+        id: slack-message
+        with:
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_WEBHOOK }}
+          slack-channel: GB3HZAWSK
+          slack-text: '<${{ steps.deploy.outputs.preview-url }}|New version ${{ steps.deploy.outputs.preview-name }}>'
+          slack-optional-icon_emoji: ":squirrel:"
+          slack-optional-username: "Cheeky"

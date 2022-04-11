@@ -1,0 +1,79 @@
+{
+  "name": "vg-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "yarn lint:js && yarn lint:css",
+    "lint:js": "eslint ./src --ignore-path ./.gitignore",
+    "lint:js:fix": "yarn lint:js --fix",
+    "lint:css": "yarn stylelint \"src/**/*.css\"",
+    "lint:css:fix": "yarn lint:css --fix"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.18.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": ">=4",
+    "lint-staged": ">=10",
+    "prettier": "^2.2.1",
+    "stylelint": "^13.9.0",
+    "stylelint-config-standard": "^22.0.0"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@tailwindcss/line-clamp": "^0.3.1",
+    "@tinymce/tinymce-react": "^3.12.6",
+    "@tippy.js/react": "^3.1.1",
+    "ahooks": "^3.1.9",
+    "antd": "^4.18.8",
+    "autoprefixer": "^10.2.4",
+    "axios": "^0.21.1",
+    "browser-image-compression": "^1.0.15",
+    "classnames": "^2.2.6",
+    "dashify": "^2.0.0",
+    "firebase": "^8.10.0",
+    "firebase-admin": "^9.11.1",
+    "flexsearch": "^0.7.21",
+    "framer-motion": "^4.1.17",
+    "i18next": "^20.1.0",
+    "i18next-browser-languagedetector": "^6.1.0",
+    "mime-types": "^2.1.33",
+    "moment": "^2.29.1",
+    "next": "12",
+    "next-firebase-auth": "^0.14.3-alpha.0",
+    "nprogress": "^0.2.0",
+    "numeral": "^2.0.6",
+    "postcss": "^8.3.6",
+    "react": "^17.0.2",
+    "react-cool-inview": "^2.0.7",
+    "react-dom": "^17.0.2",
+    "react-i18next": "^11.8.12",
+    "react-icons": "^4.2.0",
+    "react-toggle-switch": "^3.0.4",
+    "recoil": "^0.4.1",
+    "sass": "^1.38.2",
+    "swr": "^1.1.2",
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "tailwindcss": "^2.0.2",
+    "tippy.js": "^6.3.1",
+    "uuid": "^8.3.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.css": "stylelint --fix"
+  }
+}
